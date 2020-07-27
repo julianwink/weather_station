@@ -1,3 +1,4 @@
+// Original by: 
 // Weatherstation with JSON and moonphase calculation 
 // Autor:   Joern Weise
 // License: GNU GPl 3.0
@@ -7,7 +8,6 @@
 
 #include <Adafruit_GFX.h>
 #include <Adafruit_SH1106.h>
-//#include <Adafruit_SSD1306.h>
 #include <Wire.h>
 #include <ArduinoJson.h>  
 #include <NTPClient.h>
@@ -258,7 +258,6 @@ void DisplayUpdate()
     Serial.println(String("Sunrise: ") + GetTimeAsString(strSunrise, utcOffsetInSeconds));
     Serial.println(String("Sunset:  ") + GetTimeAsString(strSunset, utcOffsetInSeconds));
     Serial.println(String("Moonphase: ") + GetMoonPhase());
-    MoonLEDUpdate();
     iLastMinute = minute();
     bUpdateDisplay = false;
   }
@@ -309,172 +308,36 @@ String GetMoonPhase()
     Serial.println("Calculated moon result: " +String(dMoonphase,3));
     if(dMoonphase == 0.0) 
       dMoonphase = 1.00;
-      
     if(dMoonphase < double(0.25))
     {
       return "Abnehmender Mond";
-      //drittesViertel();
     }
     else if (dMoonphase == 0.25)
     {
       return "Abnehmender Halbmond";
-      //abHalbmond();
     }
     else if(0.25 < dMoonphase && dMoonphase < 0.50)
     {
       return "Abnehmende Sichel";
-      //letztesViertel();
     }
     else if(dMoonphase == 0.50)
     {
       return "Neumond";
-      //Neumond();
     }
     else if(0.50 < dMoonphase && dMoonphase < 0.75)
     {
       return "Zunehmende Sichel";
-      //erstesViertel();
     }
     else if(dMoonphase == 0.75)
     {
       return "Zunehmender Halbmond";
-      //zuHalbmond();
     }
     else if(0.75 < dMoonphase && dMoonphase < 1.00)
     {
       return "Zunehmender Mond";
-      //zweitesViertel();
     }
     else //Moonphase == 1
     {
       return "Vollmond";
-      //Vollmond();
     }
-}
-
-void Vollmond() {
-  int i;
-  for(i=0; i<16; i++) {
-    strip.setPixelColor(i, 253, 253, 1);
-  }
-  strip.show();
-}
-
-void Neumond() {
-  int i;
-  for(i=0; i<16; i++) {
-    strip.setPixelColor(i, 45, 45, 51);
-  }
-  strip.show();
-}
-
-void abHalbmond() {
-  int i, x;
-  for(i=8; i<17; i++) {
-    strip.setPixelColor(i, 45, 45, 51);
-    strip.setPixelColor(0, 45, 45, 51);
-  }
-  for(x=1; i<8; i++) {
-    strip.setPixelColor(i, 253, 253, 1);
-  }
-  strip.show(); 
-}
-
-void zuHalbmond() {
-  int i, x;
-  for(i=1; i<8; i++) {
-    strip.setPixelColor(i, 45, 45, 51);
-  }
-  for(x=8; i<17; i++) {
-    strip.setPixelColor(i, 253, 253, 1);
-    strip.setPixelColor(0, 253, 253, 1);
-  }
-  strip.show();    
-}
-
-void erstesViertel() {
-  int i, x;
-  for(i=1; i<10; i++) {
-    strip.setPixelColor(i, 45, 45, 51); //blue 
-  }
-  for(x=9; i<15; i++) {
-    strip.setPixelColor(i, 253, 253, 1); //yellow
-  }
-  //strip.setPixelColor(0, 255, 45, 51);
-  //strip.setPixelColor(8, 255, 45, 51);
-  strip.setPixelColor(15, 45, 45, 51);
-  strip.show();  
-}
-
-void zweitesViertel() {
-  int i, x;
-  for(i=7; i<17; i++) {
-    strip.setPixelColor(i, 253, 253, 1); //yellow 
-  }
-  for(x=2; i<7; i++) {
-    strip.setPixelColor(i, 45, 45, 51); //blue
-  }
-  //strip.setPixelColor(0, 255, 45, 51);
-  //strip.setPixelColor(8, 255, 45, 51);
-  strip.setPixelColor(1, 253, 253, 1);
-  strip.show(); 
-}
-
-void drittesViertel() {
-  int i, x;
-  for(i=0; i<10; i++) {
-    strip.setPixelColor(i, 253, 253, 1); //yellow 
-  }
-  for(x=10; i<15; i++) {
-    strip.setPixelColor(i, 45, 45, 51); //blue
-  }
-  //strip.setPixelColor(0, 255, 45, 51);
-  //strip.setPixelColor(8, 255, 45, 51);
-  strip.setPixelColor(15, 253, 253, 11);
-  strip.show();    
-}
-
-void letztesViertel() {
-  int i, x;
-  for(i=7; i<17; i++) {
-    strip.setPixelColor(i, 45, 45, 51); //blue 
-  }
-  for(x=2; i<7; i++) {
-    strip.setPixelColor(i, 253, 253, 1); //yellow
-  }
-  //strip.setPixelColor(0, 255, 45, 51);
-  //strip.setPixelColor(8, 255, 45, 51);
-  strip.setPixelColor(0, 45, 45, 51);
-  strip.setPixelColor(1, 45, 45, 51);  
-  strip.show();   
-}
-
-void MoonLEDUpdate() {
-  String MoonText; 
-  MoonText = GetMoonPhase();
-  Serial.println(String("MoonText: ") + GetMoonPhase());
-  if(MoonText == "Abnehmender Mond") {
-    drittesViertel();
-  }
-  else if(MoonText == "Abnehmender Halbmond") {
-    abHalbmond();
-  }
-  else if(MoonText == "Abnehmende Sichel") {
-    letztesViertel();
-  }
-  else if(MoonText == "Neumond") {
-    Neumond();
-  }
-  else if(MoonText == "Zunehmende Sichel") {
-    erstesViertel();
-  }
-  else if(MoonText == "Zunehmender Halbmond") {
-    zuHalbmond();
-  }
-  else if(MoonText == "Zunehmender Mond") {
-    zweitesViertel();
-  }
-  else if(MoonText == "Vollmond") {
-    Vollmond();
-  }
 }
