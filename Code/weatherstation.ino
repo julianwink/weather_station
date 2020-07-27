@@ -41,8 +41,8 @@ const char* ssid = "free wifi";
 const char* password =  "xyz";
 
 //Needed variables for openweathermap.org
-const String apiKey = "506a910e34afbeb829ab16a0a1034592";         //TODO
-const String location = "Rheurdt,de";  //TODO like "Wiesbaden,de"
+const String apiKey = "xyz";         //TODO
+const String location = "xyz";  //TODO like "Wiesbaden,de"
 const char *clientAdress = "api.openweathermap.org";
 int strMinTemp, strMaxTemp, strCurTemp, strFeelTemp, strSunrise, strSunset;
 DynamicJsonDocument jsonDoc(2000);
