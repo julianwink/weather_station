@@ -15,24 +15,14 @@
 #include <TimeLib.h>
 #include <WiFiClientSecure.h>
 #include <WiFi.h>
-#include <Adafruit_NeoPixel.h>
+
 #ifdef __AVR__
   #include <avr/power.h>
 #endif
 
-#define PIN 15
-Adafruit_NeoPixel strip = Adafruit_NeoPixel(16, PIN, NEO_GRB + NEO_KHZ800);
+#define OLED_SDA 22
+#define OLED_SCL 23
 
-//Variables for display
-//#define SCREEN_WIDTH 128 // OLED display width, in pixels
-//#define SCREEN_HEIGHT 64 // OLED display height, in pixels
-//Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire);
-
-//#define OLED_SDA 22
-//#define OLED_SCL 23
-
-#define OLED_SDA 34
-#define OLED_SCL 35
 
 Adafruit_SH1106 display(22, 23);
 
@@ -52,7 +42,7 @@ int utcOffsetInSeconds = 7200;
 String daysOfTheWeek[7] = {"So","Mo", "Di", "Mi", "Do", "Fr", "Sa"};
 time_t tmLastFullMoon;
 WiFiUDP ntpUDP;
-NTPClient timeClient(ntpUDP, "europe.pool.ntp.org", utcOffsetInSeconds);
+NTPClient timeClient(ntpUDP, "pool.ntp.org", utcOffsetInSeconds);
 
 bool firstrun = true;
 bool bUpdateDisplay = true;
